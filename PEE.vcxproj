@@ -19,10 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".github\copilot-instructions.md" />
     <None Include="PE-Parser-Plan.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mian.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="pee_utils.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pee_utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

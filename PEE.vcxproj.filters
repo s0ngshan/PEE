@@ -18,10 +18,19 @@
     <None Include="PE-Parser-Plan.md">
       <Filter>资源文件</Filter>
     </None>
+    <None Include=".github\copilot-instructions.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mian.c">
+    <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="pee_utils.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pee_utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
