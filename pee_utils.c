@@ -25,10 +25,53 @@ int File_open(const char* path, uint8_t** out_buf, size_t* out_size) {
 	size_t fsize = (size_t)fsize_long;
 	rewind(fp);                                       //将文件指针重新指向文件开头
 
+	if (fsize < 0x40) {                               //3C到40是e_lfanew所占的四字节，至少保证要读到这里
+		fclose(fp);
+		return 0;
+	}
 
+	uint8_t* buf = (uint8_t*)malloc(fsize);
+	if (!buf) {
+		fclose(fp);
+		return 0;
+	}
 
+	size_t readn = fread(buf, 1, fsize, fp);
+	fclose(fp);
+
+	if (readn != fsize) {
+		free(buf);
+		return 0;
+	}
+
+	*out_buf = buf;
+	*out_size = fsize;
+	return 1;
 }
 
 int PE_Check(const uint8_t* buf, size_t size, uint32_t* out_e_lfanew) {
+	if (!buf || size < 0x40) return 0;
 
+	if (buf[0] != 'M' || buf[1] != 'Z') return 0;
+
+	uint32_t e_lfanew =
+		(uint32_t)buf[0x3C] |
+		((uint32_t)buf[0x3D] << 8) |
+		((uint32_t)buf[0x3E] << 16) |
+		((uint32_t)buf[0x3F] << 24);
+
+	if ((size_t)e_lfanew + 4 > size) return 0;
+
+	if (buf[e_lfanew] != 'P' ||
+		buf[e_lfanew + 1] != 'E' ||
+		buf[e_lfanew + 2] != 0x00 ||
+		buf[e_lfanew + 3] != 0x00) {
+		return 0;
+	}
+
+	if (out_e_lfanew) {
+		*out_e_lfanew = e_lfanew;
+	}
+
+	return 1;
 }

@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "pee_utils.h"
+#include <windows.h>
+#include <locale.h>
 
 int main(int argc, char* argv[]) {
+	SetConsoleOutputCP(CP_UTF8);
+	SetConsoleCP(CP_UTF8);
+
 	char path[1024] = {0};               //定义文件路径缓冲区存放
 
 	//优先读取命令行参数
